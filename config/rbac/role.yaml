@@ -1,0 +1,145 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ""
+  - events.k8s.io
+  resources:
+  - events
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - configzones
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - configzones/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - configzones/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - hapis
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - hapis/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - hapis/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - kongresses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - kongresses/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - kongresses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses/status
+  verbs:
+  - get
+  - patch
+  - update

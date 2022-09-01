@@ -1,0 +1,6 @@
+apiVersion: hepa.erda.cloud/v1
+kind: Kongress
+metadata:
+  name: kongress-sample
+spec:
+  # TODO(user): Add fields here

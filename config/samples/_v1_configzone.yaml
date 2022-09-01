@@ -1,0 +1,6 @@
+apiVersion: hepa.erda.cloud/v1
+kind: ConfigZone
+metadata:
+  name: configzone-sample
+spec:
+  # TODO(user): Add fields here

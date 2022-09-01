@@ -1,0 +1,31 @@
+domain: hepa.erda.cloud
+layout:
+- go.kubebuilder.io/v3
+projectName: hapi-operator
+repo: github.com/erda-project/hepa-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: hepa.erda.cloud
+  kind: Hapi
+  path: github.com/erda-project/hepa-operator/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: hepa.erda.cloud
+  kind: ConfigZone
+  path: github.com/erda-project/hepa-operator/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: hepa.erda.cloud
+  kind: Kongress
+  path: github.com/erda-project/hepa-operator/api/v1
+  version: v1
+version: "3"
