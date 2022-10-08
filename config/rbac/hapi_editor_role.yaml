@@ -1,0 +1,24 @@
+# permissions for end users to edit hapis.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hapi-editor-role
+rules:
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - hapis
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - hapis/status
+  verbs:
+  - get

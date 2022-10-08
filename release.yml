@@ -1,0 +1,1365 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: hapi-operator-system
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.9.2
+  creationTimestamp: null
+  name: configzones.hepa.erda.cloud
+spec:
+  group: hepa.erda.cloud
+  names:
+    kind: ConfigZone
+    listKind: ConfigZoneList
+    plural: configzones
+    shortNames:
+    - cz
+    - czr
+    singular: configzone
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.scene
+      name: Scene
+      type: string
+    - jsonPath: .spec.hosts
+      name: Hosts
+      type: string
+    - jsonPath: .status.hapisCount
+      name: Hapi_Count
+      type: integer
+    - jsonPath: .status.policies
+      name: Policies
+      type: string
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: ConfigZone is the Schema for the configzones API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ConfigZoneSpec defines the desired state of ConfigZone
+            properties:
+              hosts:
+                items:
+                  type: string
+                minItems: 1
+                type: array
+              policy:
+                properties:
+                  auth:
+                    properties:
+                      authType:
+                        type: string
+                      consumers:
+                        items:
+                          properties:
+                            key:
+                              type: string
+                            secret:
+                              type: string
+                          required:
+                          - key
+                          - secret
+                          type: object
+                        type: array
+                      global:
+                        type: boolean
+                      switch:
+                        type: boolean
+                    type: object
+                  cors:
+                    properties:
+                      corsAllowCredentials:
+                        type: boolean
+                      corsAllowHeaders:
+                        type: string
+                      corsAllowMethods:
+                        type: string
+                      corsAllowOrigin:
+                        type: string
+                      corsExposeHeaders:
+                        type: string
+                      corsMaxAge:
+                        type: integer
+                      enableCORS:
+                        type: boolean
+                      global:
+                        type: boolean
+                      switch:
+                        type: boolean
+                    type: object
+                  metric:
+                    properties:
+                      global:
+                        type: boolean
+                      switch:
+                        type: boolean
+                    type: object
+                  proxy:
+                    properties:
+                      global:
+                        type: boolean
+                      proxyTimeout:
+                        type: integer
+                      sslRedirect:
+                        type: boolean
+                      switch:
+                        type: boolean
+                    type: object
+                  safetyCSRF:
+                    properties:
+                      cookieSecure:
+                        type: boolean
+                      errMsg:
+                        type: string
+                      errStatus:
+                        type: integer
+                      excludedMethod:
+                        items:
+                          type: string
+                        type: array
+                      global:
+                        type: boolean
+                      refreshTTL:
+                        type: integer
+                      switch:
+                        type: boolean
+                      tokenDomain:
+                        type: string
+                      tokenName:
+                        type: string
+                      userCookie:
+                        type: string
+                      validTTL:
+                        type: integer
+                    type: object
+                  safetyIP:
+                    properties:
+                      blackListSourceRange:
+                        type: string
+                      domainBlackListSourceRange:
+                        type: string
+                      domainWhiteListSourceRange:
+                        type: string
+                      global:
+                        type: boolean
+                      ipType:
+                        type: string
+                      keyRateLimitingValue:
+                        type: string
+                      switch:
+                        type: boolean
+                      whiteListSourceRange:
+                        type: string
+                    required:
+                    - blackListSourceRange
+                    - domainBlackListSourceRange
+                    - domainWhiteListSourceRange
+                    - whiteListSourceRange
+                    type: object
+                  safetySBAC:
+                    properties:
+                      accessControlAPI:
+                        type: string
+                      global:
+                        type: boolean
+                      methods:
+                        items:
+                          type: string
+                        type: array
+                      patterns:
+                        items:
+                          type: string
+                        type: array
+                      switch:
+                        type: boolean
+                      withBody:
+                        type: boolean
+                      withCookie:
+                        type: boolean
+                      withHeaders:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  serverGuard:
+                    properties:
+                      global:
+                        type: boolean
+                      routeLimitBurstMultiplier:
+                        type: integer
+                      routeLimitRpm:
+                        type: integer
+                      routeLimitRps:
+                        type: integer
+                      switch:
+                        type: boolean
+                    type: object
+                type: object
+              scene:
+                type: string
+            type: object
+          status:
+            description: ConfigZoneStatus defines the observed state of ConfigZone
+            properties:
+              hapis:
+                items:
+                  type: string
+                type: array
+              hapisCount:
+                type: integer
+              phase:
+                type: string
+              policies:
+                items:
+                  type: string
+                type: array
+              spec:
+                description: ConfigZoneSpec defines the desired state of ConfigZone
+                properties:
+                  hosts:
+                    items:
+                      type: string
+                    minItems: 1
+                    type: array
+                  policy:
+                    properties:
+                      auth:
+                        properties:
+                          authType:
+                            type: string
+                          consumers:
+                            items:
+                              properties:
+                                key:
+                                  type: string
+                                secret:
+                                  type: string
+                              required:
+                              - key
+                              - secret
+                              type: object
+                            type: array
+                          global:
+                            type: boolean
+                          switch:
+                            type: boolean
+                        type: object
+                      cors:
+                        properties:
+                          corsAllowCredentials:
+                            type: boolean
+                          corsAllowHeaders:
+                            type: string
+                          corsAllowMethods:
+                            type: string
+                          corsAllowOrigin:
+                            type: string
+                          corsExposeHeaders:
+                            type: string
+                          corsMaxAge:
+                            type: integer
+                          enableCORS:
+                            type: boolean
+                          global:
+                            type: boolean
+                          switch:
+                            type: boolean
+                        type: object
+                      metric:
+                        properties:
+                          global:
+                            type: boolean
+                          switch:
+                            type: boolean
+                        type: object
+                      proxy:
+                        properties:
+                          global:
+                            type: boolean
+                          proxyTimeout:
+                            type: integer
+                          sslRedirect:
+                            type: boolean
+                          switch:
+                            type: boolean
+                        type: object
+                      safetyCSRF:
+                        properties:
+                          cookieSecure:
+                            type: boolean
+                          errMsg:
+                            type: string
+                          errStatus:
+                            type: integer
+                          excludedMethod:
+                            items:
+                              type: string
+                            type: array
+                          global:
+                            type: boolean
+                          refreshTTL:
+                            type: integer
+                          switch:
+                            type: boolean
+                          tokenDomain:
+                            type: string
+                          tokenName:
+                            type: string
+                          userCookie:
+                            type: string
+                          validTTL:
+                            type: integer
+                        type: object
+                      safetyIP:
+                        properties:
+                          blackListSourceRange:
+                            type: string
+                          domainBlackListSourceRange:
+                            type: string
+                          domainWhiteListSourceRange:
+                            type: string
+                          global:
+                            type: boolean
+                          ipType:
+                            type: string
+                          keyRateLimitingValue:
+                            type: string
+                          switch:
+                            type: boolean
+                          whiteListSourceRange:
+                            type: string
+                        required:
+                        - blackListSourceRange
+                        - domainBlackListSourceRange
+                        - domainWhiteListSourceRange
+                        - whiteListSourceRange
+                        type: object
+                      safetySBAC:
+                        properties:
+                          accessControlAPI:
+                            type: string
+                          global:
+                            type: boolean
+                          methods:
+                            items:
+                              type: string
+                            type: array
+                          patterns:
+                            items:
+                              type: string
+                            type: array
+                          switch:
+                            type: boolean
+                          withBody:
+                            type: boolean
+                          withCookie:
+                            type: boolean
+                          withHeaders:
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      serverGuard:
+                        properties:
+                          global:
+                            type: boolean
+                          routeLimitBurstMultiplier:
+                            type: integer
+                          routeLimitRpm:
+                            type: integer
+                          routeLimitRps:
+                            type: integer
+                          switch:
+                            type: boolean
+                        type: object
+                    type: object
+                  scene:
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.9.2
+  creationTimestamp: null
+  name: hapis.hepa.erda.cloud
+spec:
+  group: hepa.erda.cloud
+  names:
+    kind: Hapi
+    listKind: HapiList
+    plural: hapis
+    singular: hapi
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.endpoint
+      name: Endpoint
+      type: string
+    - jsonPath: .status.redirectTo
+      name: RedirectTo
+      type: string
+    - jsonPath: .status.policies
+      name: Policies
+      type: string
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: Hapi is the Schema for the hapis API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: HapiSpec defines the desired state of Hapi
+            properties:
+              backend:
+                properties:
+                  redirectBy:
+                    type: string
+                  rewriteTarget:
+                    type: string
+                  serviceName:
+                    type: string
+                  servicePort:
+                    type: integer
+                  upstreamHost:
+                    type: string
+                type: object
+              hosts:
+                items:
+                  type: string
+                minItems: 1
+                type: array
+              path:
+                type: string
+              policy:
+                properties:
+                  auth:
+                    properties:
+                      authType:
+                        type: string
+                      consumers:
+                        items:
+                          properties:
+                            key:
+                              type: string
+                            secret:
+                              type: string
+                          required:
+                          - key
+                          - secret
+                          type: object
+                        type: array
+                      global:
+                        type: boolean
+                      switch:
+                        type: boolean
+                    type: object
+                  cors:
+                    properties:
+                      corsAllowCredentials:
+                        type: boolean
+                      corsAllowHeaders:
+                        type: string
+                      corsAllowMethods:
+                        type: string
+                      corsAllowOrigin:
+                        type: string
+                      corsExposeHeaders:
+                        type: string
+                      corsMaxAge:
+                        type: integer
+                      enableCORS:
+                        type: boolean
+                      global:
+                        type: boolean
+                      switch:
+                        type: boolean
+                    type: object
+                  metric:
+                    properties:
+                      global:
+                        type: boolean
+                      switch:
+                        type: boolean
+                    type: object
+                  proxy:
+                    properties:
+                      global:
+                        type: boolean
+                      proxyTimeout:
+                        type: integer
+                      sslRedirect:
+                        type: boolean
+                      switch:
+                        type: boolean
+                    type: object
+                  safetyCSRF:
+                    properties:
+                      cookieSecure:
+                        type: boolean
+                      errMsg:
+                        type: string
+                      errStatus:
+                        type: integer
+                      excludedMethod:
+                        items:
+                          type: string
+                        type: array
+                      global:
+                        type: boolean
+                      refreshTTL:
+                        type: integer
+                      switch:
+                        type: boolean
+                      tokenDomain:
+                        type: string
+                      tokenName:
+                        type: string
+                      userCookie:
+                        type: string
+                      validTTL:
+                        type: integer
+                    type: object
+                  safetyIP:
+                    properties:
+                      blackListSourceRange:
+                        type: string
+                      domainBlackListSourceRange:
+                        type: string
+                      domainWhiteListSourceRange:
+                        type: string
+                      global:
+                        type: boolean
+                      ipType:
+                        type: string
+                      keyRateLimitingValue:
+                        type: string
+                      switch:
+                        type: boolean
+                      whiteListSourceRange:
+                        type: string
+                    required:
+                    - blackListSourceRange
+                    - domainBlackListSourceRange
+                    - domainWhiteListSourceRange
+                    - whiteListSourceRange
+                    type: object
+                  safetySBAC:
+                    properties:
+                      accessControlAPI:
+                        type: string
+                      global:
+                        type: boolean
+                      methods:
+                        items:
+                          type: string
+                        type: array
+                      patterns:
+                        items:
+                          type: string
+                        type: array
+                      switch:
+                        type: boolean
+                      withBody:
+                        type: boolean
+                      withCookie:
+                        type: boolean
+                      withHeaders:
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  serverGuard:
+                    properties:
+                      global:
+                        type: boolean
+                      routeLimitBurstMultiplier:
+                        type: integer
+                      routeLimitRpm:
+                        type: integer
+                      routeLimitRps:
+                        type: integer
+                      switch:
+                        type: boolean
+                    type: object
+                type: object
+            type: object
+          status:
+            description: HapiStatus defines the observed state of Hapi
+            properties:
+              endpoint:
+                type: string
+              phase:
+                type: string
+              policies:
+                items:
+                  type: string
+                type: array
+              redirectTo:
+                type: string
+              resourceVersion:
+                properties:
+                  configZone:
+                    type: string
+                  ingress:
+                    type: string
+                  service:
+                    type: string
+                type: object
+              spec:
+                description: HapiSpec defines the desired state of Hapi
+                properties:
+                  backend:
+                    properties:
+                      redirectBy:
+                        type: string
+                      rewriteTarget:
+                        type: string
+                      serviceName:
+                        type: string
+                      servicePort:
+                        type: integer
+                      upstreamHost:
+                        type: string
+                    type: object
+                  hosts:
+                    items:
+                      type: string
+                    minItems: 1
+                    type: array
+                  path:
+                    type: string
+                  policy:
+                    properties:
+                      auth:
+                        properties:
+                          authType:
+                            type: string
+                          consumers:
+                            items:
+                              properties:
+                                key:
+                                  type: string
+                                secret:
+                                  type: string
+                              required:
+                              - key
+                              - secret
+                              type: object
+                            type: array
+                          global:
+                            type: boolean
+                          switch:
+                            type: boolean
+                        type: object
+                      cors:
+                        properties:
+                          corsAllowCredentials:
+                            type: boolean
+                          corsAllowHeaders:
+                            type: string
+                          corsAllowMethods:
+                            type: string
+                          corsAllowOrigin:
+                            type: string
+                          corsExposeHeaders:
+                            type: string
+                          corsMaxAge:
+                            type: integer
+                          enableCORS:
+                            type: boolean
+                          global:
+                            type: boolean
+                          switch:
+                            type: boolean
+                        type: object
+                      metric:
+                        properties:
+                          global:
+                            type: boolean
+                          switch:
+                            type: boolean
+                        type: object
+                      proxy:
+                        properties:
+                          global:
+                            type: boolean
+                          proxyTimeout:
+                            type: integer
+                          sslRedirect:
+                            type: boolean
+                          switch:
+                            type: boolean
+                        type: object
+                      safetyCSRF:
+                        properties:
+                          cookieSecure:
+                            type: boolean
+                          errMsg:
+                            type: string
+                          errStatus:
+                            type: integer
+                          excludedMethod:
+                            items:
+                              type: string
+                            type: array
+                          global:
+                            type: boolean
+                          refreshTTL:
+                            type: integer
+                          switch:
+                            type: boolean
+                          tokenDomain:
+                            type: string
+                          tokenName:
+                            type: string
+                          userCookie:
+                            type: string
+                          validTTL:
+                            type: integer
+                        type: object
+                      safetyIP:
+                        properties:
+                          blackListSourceRange:
+                            type: string
+                          domainBlackListSourceRange:
+                            type: string
+                          domainWhiteListSourceRange:
+                            type: string
+                          global:
+                            type: boolean
+                          ipType:
+                            type: string
+                          keyRateLimitingValue:
+                            type: string
+                          switch:
+                            type: boolean
+                          whiteListSourceRange:
+                            type: string
+                        required:
+                        - blackListSourceRange
+                        - domainBlackListSourceRange
+                        - domainWhiteListSourceRange
+                        - whiteListSourceRange
+                        type: object
+                      safetySBAC:
+                        properties:
+                          accessControlAPI:
+                            type: string
+                          global:
+                            type: boolean
+                          methods:
+                            items:
+                              type: string
+                            type: array
+                          patterns:
+                            items:
+                              type: string
+                            type: array
+                          switch:
+                            type: boolean
+                          withBody:
+                            type: boolean
+                          withCookie:
+                            type: boolean
+                          withHeaders:
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      serverGuard:
+                        properties:
+                          global:
+                            type: boolean
+                          routeLimitBurstMultiplier:
+                            type: integer
+                          routeLimitRpm:
+                            type: integer
+                          routeLimitRps:
+                            type: integer
+                          switch:
+                            type: boolean
+                        type: object
+                    type: object
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.9.2
+  creationTimestamp: null
+  name: kongresses.hepa.erda.cloud
+spec:
+  group: hepa.erda.cloud
+  names:
+    kind: Kongress
+    listKind: KongressList
+    plural: kongresses
+    singular: kongress
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Kongress is the Schema for the kongresses API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: KongressSpec defines the desired state of Kongress
+            properties:
+              plugins:
+                additionalProperties:
+                  type: string
+                type: object
+              route:
+                properties:
+                  methods:
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    type: string
+                  paths:
+                    items:
+                      type: string
+                    type: array
+                  protocols:
+                    items:
+                      type: string
+                    type: array
+                  tags:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              services:
+                items:
+                  properties:
+                    host:
+                      type: string
+                    name:
+                      type: string
+                    path:
+                      type: string
+                    port:
+                      type: integer
+                    protocol:
+                      type: string
+                    tags:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+            type: object
+          status:
+            description: KongressStatus defines the observed state of Kongress
+            properties:
+              route:
+                properties:
+                  methods:
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    type: string
+                  paths:
+                    items:
+                      type: string
+                    type: array
+                  protocols:
+                    items:
+                      type: string
+                    type: array
+                  tags:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              services:
+                items:
+                  properties:
+                    host:
+                      type: string
+                    name:
+                      type: string
+                    path:
+                      type: string
+                    port:
+                      type: integer
+                    protocol:
+                      type: string
+                    tags:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hapi-operator-controller-manager
+  namespace: hapi-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: hapi-operator-leader-election-role
+  namespace: hapi-operator-system
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: hapi-operator-manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ""
+  - events.k8s.io
+  resources:
+  - events
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - configzones
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - configzones/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - configzones/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - hapis
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - hapis/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - hapis/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - kongresses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - kongresses/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - kongresses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses/status
+  verbs:
+  - get
+  - patch
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hapi-operator-metrics-reader
+rules:
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hapi-operator-proxy-role
+rules:
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hapi-operator-leader-election-rolebinding
+  namespace: hapi-operator-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hapi-operator-leader-election-role
+subjects:
+- kind: ServiceAccount
+  name: hapi-operator-controller-manager
+  namespace: hapi-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hapi-operator-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: hapi-operator-manager-role
+subjects:
+- kind: ServiceAccount
+  name: hapi-operator-controller-manager
+  namespace: hapi-operator-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hapi-operator-proxy-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: hapi-operator-proxy-role
+subjects:
+- kind: ServiceAccount
+  name: hapi-operator-controller-manager
+  namespace: hapi-operator-system
+---
+apiVersion: v1
+data:
+  controller_manager_config.yaml: |
+    apiVersion: controller-runtime.sigs.k8s.io/v1alpha1
+    kind: ControllerManagerConfig
+    health:
+      healthProbeBindAddress: :8081
+    metrics:
+      bindAddress: 127.0.0.1:8080
+    webhook:
+      port: 9443
+    leaderElection:
+      leaderElect: true
+      resourceName: 6e2fb59a.hepa.erda.cloud
+    # leaderElectionReleaseOnCancel defines if the leader should step down volume
+    # when the Manager ends. This requires the binary to immediately end when the
+    # Manager is stopped, otherwise, this setting is unsafe. Setting this significantly
+    # speeds up voluntary leader transitions as the new leader don't have to wait
+    # LeaseDuration time first.
+    # In the default scaffold provided, the program ends immediately after
+    # the manager stops, so would be fine to enable this option. However,
+    # if you are doing or is intended to do any operation such as perform cleanups
+    # after the manager stops then its usage might be unsafe.
+    # leaderElectionReleaseOnCancel: true
+kind: ConfigMap
+metadata:
+  name: hapi-operator-manager-config
+  namespace: hapi-operator-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: hapi-operator-controller-manager-metrics-service
+  namespace: hapi-operator-system
+spec:
+  ports:
+  - name: https
+    port: 8443
+    protocol: TCP
+    targetPort: https
+  selector:
+    control-plane: controller-manager
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: hapi-operator-controller-manager
+  namespace: hapi-operator-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: manager
+      labels:
+        control-plane: controller-manager
+    spec:
+      containers:
+      - args:
+        - --secure-listen-address=0.0.0.0:8443
+        - --upstream=http://127.0.0.1:8080/
+        - --logtostderr=true
+        - --v=0
+        image: registry.cn-hangzhou.aliyuncs.com/dspo/kube-rbac-proxy:v0.13.0
+        name: kube-rbac-proxy
+        ports:
+        - containerPort: 8443
+          name: https
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 5m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      - args:
+        - --health-probe-bind-address=:8081
+        - --metrics-bind-address=127.0.0.1:8080
+        - --leader-elect
+        command:
+        - hapi-operator
+        env:
+        - name: GATEWAY_ARCH
+          value: ${GATEWAY_ARCH:mse}
+        - name: MSE_OPENAPI
+          value: ${MSE_OPENAPI}
+        - name: HEPA_OPENAPI
+          value: ${HEPA_OPENAPI}
+        - name: MSP_OPENAPI
+          value: ${MSP_OPENAPI}
+        - name: KONG_ADMIN_OPENAPI
+          value: ${KONG_ADMIN_OPENAPI}
+        - name: CLUSTER_INFO_CM_NAME
+          value: ${CLUSTER_INFO_CM_NAME}
+        - name: CLUSTER_INFO_CM_NAMESPACE
+          value: ${CLUSTER_INFO_CM_NAMESPACE}
+        - name: NGINX_CONTROLLER_CM_NAME
+          value: ${NGINX_CONTROLLER_CM_NAME}
+        - name: NGINX_CONTROLLER_CM_NAMESPACE
+          value: ${NGINX_CONTROLLER_CM_NAMESPACE}
+        image: registry.cn-hangzhou.aliyuncs.com/dspo/hapi-operator:v1-20220929-185032-7970edd
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8081
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        name: manager
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8081
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: hapi-operator-controller-manager
+      terminationGracePeriodSeconds: 10

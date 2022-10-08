@@ -1,0 +1,20 @@
+# permissions for end users to view kongresses.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kongress-viewer-role
+rules:
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - kongresses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - hepa.erda.cloud
+  resources:
+  - kongresses/status
+  verbs:
+  - get
