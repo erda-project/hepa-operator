@@ -1,94 +1,46 @@
-# hapi-operator
-// TODO(user): Add simple overview of use/purpose
+# hepa-operator
 
-## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+The Hepa Operator is a Kubernetes Operator, implemented using the kubebuilder scaffolding tool.
 
-## Getting Started
-You’ll need a Kubernetes cluster to run against. You can use [KIND](https://sigs.k8s.io/kind) to get a local cluster for testing, or run against a remote cluster.
-**Note:** Your controller will automatically use the current context in your kubeconfig file (i.e. whatever cluster `kubectl cluster-info` shows).
+Hepa Operator is designed to abstract the reverse proxy of a cluster API gateway and the policies attached to the HTTP interface. Currently supported and intended gateway products are:
 
-### Running on the cluster
-1. Install Instances of Custom Resources:
+- Aliyun MSE
+- Kong
 
-```sh
-kubectl apply -f config/samples/
-```
+## Usage
 
-2. Build and push your image to the location specified by `IMG`:
-	
-```sh
-make docker-build docker-push IMG=<some-registry>/hapi-operator:tag
-```
-	
-3. Deploy the controller to the cluster with the image specified by `IMG`:
+Prerequisite: K8s must be installed first. You can install K8s using tools such as [KIND](https://sigs.k8s.io/kind) or Docker Desktop.
+
+### Build and Deploy
 
 ```sh
-make deploy IMG=<some-registry>/hapi-operator:tag
+make release-completelty
 ```
 
-### Uninstall CRDs
-To delete the CRDs from the cluster:
+A `release.yml` file is generated in the project root, which contains all the K8s resources needed to install Hepa Operator (including CRDs, Namespace, Deployment, Role, etc.).
 
 ```sh
-make uninstall
+make apply
 ```
 
-### Undeploy controller
-UnDeploy the controller to the cluster:
+All K8s resources of Hepa Operator will be created or updated.
+
+### Local Operation
 
 ```sh
-make undeploy
+make manifest; make install; make run
 ```
 
-## Contributing
-// TODO(user): Add detailed information on how you would like others to contribute to this project
+to run locally.
 
-### How it works
-This project aims to follow the Kubernetes [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/)
-
-It uses [Controllers](https://kubernetes.io/docs/concepts/architecture/controller/) 
-which provides a reconcile function responsible for synchronizing resources untile the desired state is reached on the cluster 
-
-### Test It Out
-1. Install the CRDs into the cluster:
+### Apply Samples
 
 ```sh
-make install
+make apply-samples
 ```
 
-2. Run your controller (this will run in the foreground, so switch to a new terminal if you want to leave it running):
+### Uninstallation
 
 ```sh
-make run
+kubectl delete --ignore-not-found -f release.yml
 ```
-
-**NOTE:** You can also run this in one step by running: `make install run`
-
-### Modifying the API definitions
-If you are editing the API definitions, generate the manifests such as CRs or CRDs using:
-
-```sh
-make manifests
-```
-
-**NOTE:** Run `make --help` for more information on all potential `make` targets
-
-More information can be found via the [Kubebuilder Documentation](https://book.kubebuilder.io/introduction.html)
-
-## License
-
-Copyright 2022.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
